@@ -20,8 +20,11 @@ parser = LlamaParse(
 
 # use SimpleDirectoryReader to parse our file
 file_extractor = {".pdf": parser}
+
+file-location = '/mnt/c/Users/Vijay/Desktop/biohack25/sample-pdfs/sample_ehr.pdf'
+
 documents = SimpleDirectoryReader(
-    input_files=[r'/mnt/c/Users/Vijay/Desktop/biohack25/sample-pdfs/sample_ehr.pdf'], 
+    input_files=[file-location], 
     file_extractor=file_extractor
     ).load_data()
 
