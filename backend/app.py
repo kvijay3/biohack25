@@ -8,6 +8,9 @@ sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 
 from parse import parse_upload
 
+import requests
+#COLAB_API_URL = "https://8909-35-189-181-23.ngrok-free.app/generate"
+
 app = Flask(__name__)
 
 UPLOAD_FOLDER = './uploads'
@@ -15,7 +18,7 @@ ALLOWED_EXTENSIONS = {'pdf'}
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 
 # Create uploads directory if it doesn't exist
-if not os.path.exists(UPLOAD_FOLDER):
+if not os.path.exists(UPLOAD_FOLDER)
     os.makedirs(UPLOAD_FOLDER)
 
 def allowed_file(filename):
@@ -42,14 +45,28 @@ def upload_file():
 
         try:
             file.save(save_path)
+            print("1")
+            processed_text = parse_upload(save_path)
+            print("2")
+            # information from COLAB
+            """
+            response = requests.post(COLAB_API_URL, json={"message": str(processed_text)}, verify=False, timeout=30)
 
-            processed_text = str(parse_upload(save_path))
 
+            if response.status_code == 200:
+                ai_response = response.json().get("response", "No response from AI")
+            else:
+                ai_response = f"Error from AI: {response.text}"
+
+
+            """
+            
             return jsonify({
                 "message": "File uploaded and processed successfully",
                 "filename": original_filename,
                 "path": save_path,
-                "processed_text": processed_text
+                "processed_text": str(processed_text),
+                "ai_response": ai_response
             }), 200
 
         except Exception as e:
