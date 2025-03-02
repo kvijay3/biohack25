@@ -1,7 +1,12 @@
 from flask import Flask, request, jsonify
 from werkzeug.utils import secure_filename
+import sys
 import os
 from datetime import datetime
+
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
+
+from parse import parse_upload
 
 app = Flask(__name__)
 
@@ -37,11 +42,16 @@ def upload_file():
 
         try:
             file.save(save_path)
+
+            processed_text = str(parse_upload(save_path))
+
             return jsonify({
-                "message": "File uploaded successfully",
+                "message": "File uploaded and processed successfully",
                 "filename": original_filename,
-                "path": save_path
+                "path": save_path,
+                "processed_text": processed_text
             }), 200
+
         except Exception as e:
             return jsonify({"message": f"Error saving file: {str(e)}"}), 500
     
